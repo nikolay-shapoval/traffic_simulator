@@ -1,3 +1,3 @@
 A Simplified Traffic Simulation
 
-php7.0 required
+php >= 7.0 required
