@@ -72,7 +72,7 @@ class trafficSimulator
         }
 
         if ($this->trafficLightsTime < 1) {
-            exit('The traffic light is faulty!');
+            exit('The traffic lights is faulty!');
         }
 
         foreach ($this->vehicles as $vehicle) {
@@ -101,13 +101,11 @@ class trafficSimulator
                     break;
                 case $vehicle < $passed:
                     if (!$trafficLightsPassed) {
-                        if ($passed >= $this->trafficLightsPosition &&
-                            $passed < ($this->trafficLightsPosition + $this->trafficLightsTime)) {
-                            if ($this->isTrafficLightsGreen($passed - $vehicle + 1)) {
-                                if ($vehicle <= $this->trafficLightsPosition){
+                        if ($this->__isOnTrafficLights($passed)) {
+                            if ($this->__isTrafficLightsGreen($passed - $vehicle + 1)) {
+                                if ($vehicle <= $this->trafficLightsPosition) {
                                     echo "<span style='color: green;'>-MOVE-</span>";
-                                }
-                                else{
+                                } else {
                                     echo "*";
                                 }
                                 $trafficLightsPassed = true;
@@ -130,6 +128,17 @@ class trafficSimulator
     }
 
     /**
+     * @param $position
+     *
+     * @return bool
+     */
+    private function __isOnTrafficLights($position): bool
+    {
+        return $position >= $this->trafficLightsPosition &&
+            $position < ($this->trafficLightsPosition + $this->trafficLightsTime);
+    }
+
+    /**
      * @duration setter
      */
     private function __setDuration()
@@ -141,7 +150,7 @@ class trafficSimulator
             $this->duration++;
 
             if ($furtherPosition === $this->trafficLightsPosition) {
-                if ($this->isTrafficLightsGreen($this->duration)) {
+                if ($this->__isTrafficLightsGreen($this->duration)) {
                     $furtherPosition++;
                 }
             } else {
@@ -155,7 +164,7 @@ class trafficSimulator
      *
      * @return bool
      */
-    private function isTrafficLightsGreen($position): bool
+    private function __isTrafficLightsGreen($position): bool
     {
         if ((floor($position / $this->trafficLightsTime) % 2) == 0) {
             if ($this->firstIsGreenLight) {
